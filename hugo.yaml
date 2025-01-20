@@ -3,7 +3,7 @@
 # ~~~~~~~~~
 baseURL: "https://hugo.forsakendelusion.online/" # 主站的 URL
 title: Delusion's Blog # 站点标题
-copyright: "[©2024-2025 Delusion's Blog](https://hugo.forsakendelusion.online/)" # 网站的版权声明，通常显示在页脚
+# copyright: "[©2024-2025 Delusion's Blog](https://hugo.forsakendelusion.online/)" # 网站的版权声明，通常显示在页脚，但这里我使用更改footer模板的方式实现
 theme: PaperMod # 主题
 languageCode: zh-cn # 语言
 
@@ -71,6 +71,9 @@ params:
   # images: ["https://forsakendelusion.online/wp-content/uploads/2024/07/715156.png"] # 缺省的图片，比如，博客的封面
   DateFormat: "2006-01-02" # 这个时间是作者自己写的，只能这样写
   hideFooter: false
+  footer:
+    hideCopyright: false  # 控制版权信息显示
+    
 
   # 首页的文章上方的一些信息
   homeInfoParams:
