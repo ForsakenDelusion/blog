@@ -15,6 +15,10 @@
     --code-block-bg: #faf4ed;
     --code-bg: rgb(245, 245, 245);
     --border: rgb(238, 238, 238);
+
+    .post-content pre code {
+        color:rgb(125, 102, 102);
+    }
 }
 
 .dark {
