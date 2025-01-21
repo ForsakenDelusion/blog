@@ -31,6 +31,10 @@
     --code-block-bg: #282a36;
     --code-bg: rgb(55, 56, 62);
     --border: rgb(51, 51, 51);
+
+    .post-content pre code {
+        color:rgb(213, 213, 214);
+    }
 }
 
 .list {
