@@ -4,7 +4,6 @@
         {{- if site.Copyright }}
         <span>{{ site.Copyright | markdownify }}</span>
         {{- else }}
-        
         <span>&copy; 2024-{{ now.Year }} <a href="{{ "" | absLangURL }}">{{ site.Title }}</a></span>
         <span xmlns:cc="http://creativecommons.org/ns#" xmlns:dct="http://purl.org/dc/terms/">
             Licensed under
@@ -16,6 +15,30 @@
               >CC BY-NC 4.0 </a
             ></span
         >
+        <!-- 网站运行时间的设置 -->
+        <div>
+            <span id="timeDisplay">载入时间...</span>
+            <script>
+                var now = new Date();
+                function createtime() {
+                    var grt = new Date("01/25/2024 13:14:21");
+                    now.setTime(now.getTime() + 250);
+                    days = (now - grt) / 1000 / 60 / 60 / 24;
+                    dnum = Math.floor(days);
+                    hours = (now - grt) / 1000 / 60 / 60 - (24 * dnum);
+                    hnum = Math.floor(hours);
+                    if (String(hnum).length == 1) { hnum = "0" + hnum; }
+                    minutes = (now - grt) / 1000 / 60 - (24 * 60 * dnum) - (60 * hnum);
+                    mnum = Math.floor(minutes);
+                    if (String(mnum).length == 1) { mnum = "0" + mnum; }
+                    seconds = (now - grt) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+                    snum = Math.round(seconds);
+                    if (String(snum).length == 1) { snum = "0" + snum; }
+                    document.getElementById("timeDisplay").innerHTML = "本站已运行 " + dnum + " 天 " + hnum + " 小时 " + mnum + " 分 " + snum + " 秒";
+                }
+                setInterval(createtime, 250);
+            </script>
+        </div>
         {{- end }}
         {{- print " · "}}
     {{- end }}
@@ -24,7 +47,7 @@
         {{ . | markdownify }}
         {{- print " · "}}
     {{- end }}
-
+    <a href="https://beian.miit.gov.cn/" target="_blank">皖ICP备2024038481号-1 | </a>
     <span>
         Powered by
         <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
@@ -153,3 +176,5 @@
     });
 </script>
 {{- end }}
+
+
