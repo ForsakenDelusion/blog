@@ -17,6 +17,8 @@ enableEmoji: true # 允许 emoji
 pygmentsUseClasses: true
 defaultContentLanguage: zh # 顶部首先展示的语言界面
 defaultContentLanguageInSubdir: false # 是否要在地址栏加上默认的语言代码
+enableGitInfo: true
+
 
 languages:
   zh:
@@ -53,10 +55,9 @@ languages:
 pagination.pagerSize: 8 # 每页展示的文章数量，这个没找到文档，应该是主题自己设置的
 
 params:
-  enableGitInfo: true
   env: production # to enable google analytics, opengraph, twitter-cards and schema.
   description: "Theme PaperMod - https://github.com/adityatelange/hugo-PaperMod"
-  author: Forsaken Delusion
+  author: Delusion
   defaultTheme: light # 默认是亮色背景
   ShowShareButtons: false # 关闭分享的按钮
   ShowReadingTime: true # 展示预估的阅读时长
@@ -152,6 +153,7 @@ markup:
     renderer:
       unsafe: true # 可以 unsafe，有些 html 标签和样式可能需要
   extensions:
+    taskList: true   
     passthrough:
       delimiters:
         block:
@@ -175,7 +177,10 @@ markup:
     # 这里设置 style 没用，得自己加 css
     # style: "github-dark"
     # style: monokai
-
+  parser:
+    autoHeadingID: true  # 可选：自动生成标题ID
+    attribute: true      # 允许HTML属性
+    
 frontmatter:
     date:
     - date
@@ -184,5 +189,3 @@ frontmatter:
     lastmod:
     - lastmod
     - :git
-    - date
-    - publishDate
