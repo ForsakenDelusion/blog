@@ -1,9 +1,5 @@
 /* Generated using: hugo gen chromastyles --style=rose-pine-dawn */
 
-.post-content pre code {
-    --code-block-bg: #faf4ed ;
-}
-
 /* Background */ .bg { color:#575279;background-color:#faf4ed; }
 /* PreWrapper */ .chroma { color:#575279;background-color:#faf4ed; }
 /* Other */ .chroma .x {  }
@@ -94,10 +90,6 @@
 
 
 body.dark {
-
-.post-content pre code {
-    --code-block-bg: #282a36 ;
-}
     
 /* Generated using: hugo gen chromastyles --style=dracula */
 
