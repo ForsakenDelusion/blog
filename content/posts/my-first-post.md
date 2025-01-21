@@ -1,7 +1,8 @@
-+++
-date = '2025-01-20T11:56:59+08:00'
-title = 'My First Post'
-+++
+---
+title: "文章标题"
+date: 2024-01-20
+lastmod: 2024-01-21   # 最后修改时间
+---
 # for test
 
 ```c
