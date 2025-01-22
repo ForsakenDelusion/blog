@@ -5,7 +5,7 @@
     /* max-width: calc(var(--nav-width) + var(--gap) * 2); 注释此行以适配顶部导航栏*/
     margin-inline-start: auto;
     margin-inline-end: auto;
-    line-height: var(--header-height);
+    line-height: var(--header-height * 0.5); /* 适配移动端的高度 */
 }
 
 .nav a {
