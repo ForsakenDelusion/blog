@@ -77,8 +77,6 @@ params:
   hideFooter: false
   footer:
     hideCopyright: false  # 控制版权信息显示
-  
-    
 
   # 首页的文章上方的一些信息
   homeInfoParams:
@@ -124,6 +122,8 @@ params:
       favicon32x32: "/assets/favicon.ico"
       apple_touch_icon: "/assets/favicon.ico"
       safari_pinned_tab: "/assets/favicon.ico"
+      # disableFingerprinting: true    # 可选，但有时候有帮助    
+
 
   # 评论的设置
   giscus:
