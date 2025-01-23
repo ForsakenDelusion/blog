@@ -123,7 +123,7 @@
         // 动态获取文章和目录的宽度
         const main = document.querySelector('.main').offsetWidth; // 获取文章的实际宽度
         const toc = document.querySelector('.toc').offsetWidth;   // 获取目录的实际宽度
-        const gap = parseInt(getComputedStyle(document.body).getPropertyValue('--gap'), 10);
+        const gap = parseInt(getComputedStyle(document.body).getPropertyValue('--gap'), 15);
     
         // 判断是否有足够的空间来显示目录（TOC）
         if (width - main - toc - gap * 2 > 0) {
@@ -140,5 +140,7 @@
         let win = element.ownerDocument.defaultView;
         return rect.top + win.pageYOffset;   
     }
+    
+    
 </script>
 {{- end }}
