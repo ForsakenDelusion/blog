@@ -1287,9 +1287,13 @@ body.dark {
 
 ```
 
-## 部署到Github Pages
+## 部署到Github Pages（已弃用）
 
 这里就不详细赘述了，按照 Hugo 的[文档](https://gohugo.io/hosting-and-deployment/hosting-on-github/)指导来操作即可。
+
+## 部署到vercel
+
+首先关闭掉`github pages`，然后注册`vercel`账户，直接导入你的`blog`仓库，然后再部署页面的框架选择`hugo`，这里注意一下，需要设置环境变量`HUGO_VERSION`为你构建时的`hugo`版本，我的为`0.141.0`。然后再按照`vercel`给你的提示设置域名解析。
 
 ## 结尾
 
