@@ -146,7 +146,7 @@ placeholder: "请输入一些东西"
 
 ### 个人配置
 
-相比于原主题，我加入了顶部栏常驻，数学公式渲染，代码块日夜主题适配，hover效果，盘古之白，图片放大支持，首页显示tag，最后编辑时间支持。
+相比于原主题，我加入了顶部栏常驻，数学公式渲染，代码块日夜主题适配，hover效果，盘古之白，图片放大支持，首页显示tag，最后编辑时间支持，侧边目录。
 
 首先我们仍需要按照官网所说，将博客根目录下的`hugo.toml`改成`hugo.yaml`，这里直接使用下面的命令，因为之后我们的配置文件会覆盖的复制进去。
 
@@ -417,81 +417,36 @@ frontmatter:
 
 ### 在主页显示文章tag信息
 
-参考[# Hugo PaperMod 主题精装修](https://yunpengtai.top/posts/hugo-journey/#%e6%96%87%e7%ab%a0%e5%88%86%e7%b1%bb)
-在`./layouts/_default/_markup/single.html`中填入
+参考[# Hugo PaperMod 主题精装修](https://yunpengtai.top/posts/hugo-journey/#%e6%96%87%e7%ab%a0%e5%88%86%e7%b1%bb)和[# 初始化 & 设置 PaperMod 主题的基础功能](https://aikenh.cn/posts/%E5%88%9D%E5%A7%8B%E5%8C%96%E8%AE%BE%E7%BD%AEpapermod%E4%B8%BB%E9%A2%98%E7%9A%84%E5%9F%BA%E7%A1%80%E5%8A%9F%E8%83%BD/#tag-on-meta-info-%e6%96%87%e7%ab%a0%e7%9a%84%e5%85%83%e4%bf%a1%e6%81%af%e4%b8%ad%e6%98%be%e7%a4%ba-tag)
+（这一步现在不用添加，在下面添加最后编辑时间支持的时候直接复制整个文件的配置就好了）修改 `layouts/partials/post_meta.html` 中的 `author` 部分如下：
 
 ```html
-{{- define "main" }}
+{{- $author := (partial "author.html" .) }}
+{{- $tags := (partial "tags.html" .) }}
+{{- if $tags }}
+    {{- $scratch.Add "meta" (slice $ author $tags) -}}
+{{- else}}
+    {{- $scratch.Add "meta" (slice $ author) -}}
+{{- end}}
+```
 
-<article class="post-single">
-  <header class="post-header">
-    {{ partial "breadcrumbs.html" . }}
-    <h1 class="post-title entry-hint-parent">
-      {{ .Title }}
-      {{- if .Draft }}
-      <span class="entry-hint" title="Draft">
-        <svg xmlns="http://www.w3.org/2000/svg" height="35" viewBox="0 -960 960 960" fill="currentColor">
-          <path
-            d="M160-410v-60h300v60H160Zm0-165v-60h470v60H160Zm0-165v-60h470v60H160Zm360 580v-123l221-220q9-9 20-13t22-4q12 0 23 4.5t20 13.5l37 37q9 9 13 20t4 22q0 11-4.5 22.5T862.09-380L643-160H520Zm300-263-37-37 37 37ZM580-220h38l121-122-18-19-19-18-122 121v38Zm141-141-19-18 37 37-18-19Z" />
-        </svg>
-      </span>
-      {{- end }}
-    </h1>
-    {{- if .Description }}
-    <div class="post-description">
-      {{ .Description }}
-    </div>
-    {{- end }}
-    {{- if not (.Param "hideMeta") }}
-    <div class="post-meta">
-      {{- partial "post_meta.html" . -}}
-      {{- partial "translation_list.html" . -}}
-      {{- partial "edit_post.html" . -}}
-      {{- partial "post_canonical.html" . -}}
-    </div>
-    {{- end }}
-  </header>
-  {{- $isHidden := (.Param "cover.hiddenInSingle") | default (.Param "cover.hidden") | default false }}
-  {{- partial "cover.html" (dict "cxt" . "IsSingle" true "isHidden" $isHidden) }}
-  {{- if (.Param "ShowToc") }}
-  {{- partial "toc.html" . }}
-  {{- end }}
+在`layouts/partials/tags.html`中填入
 
-  {{- if .Content }}
-  <div class="post-content">
-    {{- if not (.Param "disableAnchoredHeadings") }}
-    {{- partial "anchored_headings.html" .Content -}}
-    {{- else }}{{ .Content }}{{ end }}
-  </div>
-  {{- end }}
-
-  <footer class="post-footer">
-    {{- $tags := .Language.Params.Taxonomies.tag | default "tags" }}
-    <ul class="post-tags">
-      {{- range ($.GetTerms $tags) }}
-      <li><a href="{{ .Permalink }}">{{ .LinkTitle }}</a></li>
-      {{- end }}
-    </ul>
-    {{- if (.Param "ShowPostNavLinks") }}
-    {{- partial "post_nav_links.html" . }}
-    {{- end }}
-    {{- if (and site.Params.ShowShareButtons (ne .Params.disableShare true)) }}
-    {{- partial "share_icons.html" . -}}
-    {{- end }}
-  </footer>
-
-  {{- if (.Param "comments") }}
-  {{- partial "comments.html" . }}
-  {{- end }}
-</article>
-
-{{- end }}{{/* end main */}}
+```html
+{{- $tags := .Params.tags -}}
+{{- if $tags -}}
+  {{- $lastIndex := sub (len $tags) 1 -}}
+  {{- range $index, $tag := $tags -}}
+    <a href="/tags/{{ $tag | urlize }}"> {{ $tag }}</a>
+    {{- if ne $index $lastIndex }}&nbsp;·&nbsp;{{ end -}}
+  {{- end -}}
+{{- end -}}
 
 ```
 
 ### 添加最后编辑时间支持
 
-`./layouts/partials/post_meta.html`中填入
+`layouts/partials/post_meta.html`中填入
 
 ```html
 {{/* 创建一个新的 scratch 对象用于存储元信息 */}}
@@ -552,11 +507,236 @@ frontmatter:
 {{- end -}}
 ```
 
+### 侧边目录
+
+参考[# Hugo-PaperMod主题自定义](https://blog.grew.cc/posts/papermod-modify/#%E6%96%B9%E6%B3%95%E4%B8%89)
+复制模板文件 `~/themes\PaperMod\layouts\partials\toc.html` 到站点根目录下，替换内容并添加样式：
+
+```html
+{{- $headers := findRE "<h[1-6].*?>(.|\n])+?</h[1-6]>" .Content -}}
+{{- $has_headers := ge (len $headers) 1 -}}
+{{- if $has_headers -}}
+<aside id="toc-container" class="toc-container wide">
+    <div class="toc">
+        <details {{if (.Param "TocOpen") }} open{{ end }}>
+            <summary accesskey="c" title="(Alt + C)">
+                <span class="details">{{- i18n "toc" | default "Table of Contents" }}</span>
+            </summary>
+            <div class="inner">
+                {{- $largest := 6 -}}
+                {{- range $headers -}}
+                {{- $headerLevel := index (findRE "[1-6]" . 1) 0 -}}
+                {{- $headerLevel := len (seq $headerLevel) -}}
+                {{- if lt $headerLevel $largest -}}
+                {{- $largest = $headerLevel -}}
+                {{- end -}}
+                {{- end -}}
+                {{- $firstHeaderLevel := len (seq (index (findRE "[1-6]" (index $headers 0) 1) 0)) -}}
+                {{- $.Scratch.Set "bareul" slice -}}
+                <ul>
+                    {{- range seq (sub $firstHeaderLevel $largest) -}}
+                    <ul>
+                        {{- $.Scratch.Add "bareul" (sub (add $largest .) 1) -}}
+                        {{- end -}}
+                        {{- range $i, $header := $headers -}}
+                        {{- $headerLevel := index (findRE "[1-6]" . 1) 0 -}}
+                        {{- $headerLevel := len (seq $headerLevel) -}}
+                        {{/* get id="xyz" */}}
+                        {{- $id := index (findRE "(id=\"(.*?)\")" $header 9) 0 }}
+                        {{- /* strip id="" to leave xyz, no way to get regex capturing groups in hugo */ -}}
+                        {{- $cleanedID := replace (replace $id "id=\"" "") "\"" "" }}
+                        {{- $header := replaceRE "<h[1-6].*?>((.|\n])+?)</h[1-6]>" "$1" $header -}}
+                        {{- if ne $i 0 -}}
+                        {{- $prevHeaderLevel := index (findRE "[1-6]" (index $headers (sub $i 1)) 1) 0 -}}
+                        {{- $prevHeaderLevel := len (seq $prevHeaderLevel) -}}
+                        {{- if gt $headerLevel $prevHeaderLevel -}}
+                        {{- range seq $prevHeaderLevel (sub $headerLevel 1) -}}
+                        <ul>
+                            {{/* the first should not be recorded */}}
+                            {{- if ne $prevHeaderLevel . -}}
+                            {{- $.Scratch.Add "bareul" . -}}
+                            {{- end -}}
+                            {{- end -}}
+                            {{- else -}}
+                            </li>
+                            {{- if lt $headerLevel $prevHeaderLevel -}}
+                            {{- range seq (sub $prevHeaderLevel 1) -1 $headerLevel -}}
+                            {{- if in ($.Scratch.Get "bareul") . -}}
+                        </ul>
+                        {{/* manually do pop item */}}
+                        {{- $tmp := $.Scratch.Get "bareul" -}}
+                        {{- $.Scratch.Delete "bareul" -}}
+                        {{- $.Scratch.Set "bareul" slice}}
+                        {{- range seq (sub (len $tmp) 1) -}}
+                        {{- $.Scratch.Add "bareul" (index $tmp (sub . 1)) -}}
+                        {{- end -}}
+                        {{- else -}}
+                    </ul>
+                    </li>
+                    {{- end -}}
+                    {{- end -}}
+                    {{- end -}}
+                    {{- end }}
+                    <li>
+                        <a href="#{{- $cleanedID -}}" aria-label="{{- $header | plainify -}}">{{- $header | safeHTML -}}</a>
+                        {{- else }}
+                    <li>
+                        <a href="#{{- $cleanedID -}}" aria-label="{{- $header | plainify -}}">{{- $header | safeHTML -}}</a>
+                        {{- end -}}
+                        {{- end -}}
+                        <!-- {{- $firstHeaderLevel := len (seq (index (findRE "[1-6]" (index $headers 0) 1) 0)) -}} -->
+                        {{- $firstHeaderLevel := $largest }}
+                        {{- $lastHeaderLevel := len (seq (index (findRE "[1-6]" (index $headers (sub (len $headers) 1)) 1) 0)) }}
+                    </li>
+                    {{- range seq (sub $lastHeaderLevel $firstHeaderLevel) -}}
+                    {{- if in ($.Scratch.Get "bareul") (add . $firstHeaderLevel) }}
+                </ul>
+                {{- else }}
+                </ul>
+                </li>
+                {{- end -}}
+                {{- end }}
+                </ul>
+            </div>
+        </details>
+    </div>
+</aside>
+<script>
+    let activeElement;
+    let elements;
+    window.addEventListener('DOMContentLoaded', function (event) {
+        checkTocPosition();
+        elements = document.querySelectorAll('h1[id],h2[id],h3[id],h4[id],h5[id],h6[id]');
+         // Make the first header active
+         activeElement = elements[0];
+         const id = encodeURI(activeElement.getAttribute('id')).toLowerCase();
+         document.querySelector(`.inner ul li a[href="#${id}"]`).classList.add('active');
+     }, false);
+    window.addEventListener('resize', function(event) {
+        checkTocPosition();
+    }, false);
+    window.addEventListener('scroll', () => {
+        // Check if there is an object in the top half of the screen or keep the last item active
+        activeElement = Array.from(elements).find((element) => {
+            if ((getOffsetTop(element) - window.pageYOffset) > 0 && 
+                (getOffsetTop(element) - window.pageYOffset) < window.innerHeight/2) {
+                return element;
+            }
+        }) || activeElement
+        elements.forEach(element => {
+             const id = encodeURI(element.getAttribute('id')).toLowerCase();
+             if (element === activeElement){
+                 document.querySelector(`.inner ul li a[href="#${id}"]`).classList.add('active');
+             } else {
+                 document.querySelector(`.inner ul li a[href="#${id}"]`).classList.remove('active');
+             }
+         })
+     }, false);
+    const main = parseInt(getComputedStyle(document.body).getPropertyValue('--article-width'), 10);
+    const toc = parseInt(getComputedStyle(document.body).getPropertyValue('--toc-width'), 10);
+    const gap = parseInt(getComputedStyle(document.body).getPropertyValue('--gap'), 10);
+    function checkTocPosition() {
+        const width = document.body.scrollWidth;
+        if (width - main - (toc * 2) - (gap * 4) > 0) {
+            document.getElementById("toc-container").classList.add("wide");
+        } else {
+            document.getElementById("toc-container").classList.remove("wide");
+        }
+    }
+    function getOffsetTop(element) {
+        if (!element.getClientRects().length) {
+            return 0;
+        }
+        let rect = element.getBoundingClientRect();
+        let win = element.ownerDocument.defaultView;
+        return rect.top + win.pageYOffset;   
+    }
+</script>
+{{- end }}
+```
+
+在`assets/css/extended/toc.css`下
+
+```css
+:root {
+    --nav-width: 1380px;
+    --article-width: 650px;
+    --toc-width: 300px;
+}
+.toc {
+    margin: 0 2px 40px 2px;
+    border: 1px solid var(--border);
+    background: var(--entry);
+    border-radius: var(--radius);
+    padding: 0.4em;
+}
+.toc-container.wide {
+    position: absolute;
+    height: 100%;
+    border-right: 1px solid var(--border);
+    left: calc((var(--toc-width) + var(--gap)) * -1);
+    top: calc(var(--gap) * 2);
+    width: var(--toc-width);
+}
+.wide .toc {
+    position: sticky;
+    top: var(--gap);
+    border: unset;
+    background: unset;
+    border-radius: unset;
+    width: 100%;
+    margin: 0 2px 40px 2px;
+}
+.toc details summary {
+    cursor: zoom-in;
+    margin-inline-start: 20px;
+    padding: 12px 0;
+}
+.toc details[open] summary {
+    font-weight: 500;
+}
+.toc-container.wide .toc .inner {
+    margin: 0;
+}
+.active {
+    font-size: 110%;
+    font-weight: 600;
+}
+.toc ul {
+    list-style-type: circle;
+}
+.toc .inner {
+    margin: 0 0 0 20px;
+    padding: 0px 15px 15px 20px;
+    font-size: 16px;
+    /*目录显示高度*/
+    max-height: 83vh;
+    overflow-y: auto;
+}
+.toc .inner::-webkit-scrollbar-thumb {  /*滚动条*/
+    background: var(--border);
+    border: 7px solid var(--theme);
+    border-radius: var(--radius);
+}
+.toc li ul {
+    margin-inline-start: calc(var(--gap) * 0.5);
+    list-style-type: none;
+}
+.toc li {
+    list-style: none;
+    font-size: 0.95rem;
+    padding-bottom: 5px;
+}
+.toc li a:hover {
+    color: var(--secondary);
+}
+```
+
 ## 额外功能
 
 以下功能都需要修改`extend_head.html`这个文件，所以我们放在一起说。
 
-首先在`./layouts/partials/extended_head.html`中填入我已经修改好的文件，后文我会逐个介绍。
+首先在`layouts/partials/extended_head.html`中填入我已经修改好的文件，后文我会逐个介绍。
 
 ```html
 {{- /* Head custom content area start */ -}}
@@ -642,7 +822,7 @@ frontmatter:
 
 就是为中文和英文之间加入一个空格，提升阅读体验。
 
-这里采用[# Hugo PaperMod 主题精装修](https://yunpengtai.top/posts/hugo-journey/)这篇文章的方案。首先将`pangu.min.js`文件下载下来放进`./assets/js/`目录下。如果你不会下载，请自行`Google`或者问ai。剩下的操作我们在上面已经完成了。
+这里采用[# Hugo PaperMod 主题精装修](https://yunpengtai.top/posts/hugo-journey/)这篇文章的方案。首先将`pangu.min.js`文件下载下来放进`assets/js/`目录下。如果你不会下载，请自行`Google`或者问ai。剩下的操作我们在上面已经完成了。
 
 ### 图片放大支持
 
@@ -666,11 +846,11 @@ frontmatter:
 
 ## 个性化设置
 
-前面提到过留了一个问题后面说，我们的`PaperMod`是以子模块的方式被安装的，这就会导致一个问题，当我们想个性化主题的时候，会发现一个非常难受的点，因为远程仓库关联的是官方的`PaperMod`，所以你修改完了同步不过去，当然解决办法也很多，比如新建一个复制于官方仓库的个人仓库维护，或者添加两个远程仓库之类的方法。但我这里所说的是较为模块化的方法，那就是将`themes/PaperMod/`下的对应文件复制到博客根目录下的相同文件夹内进行修改的方法。比如原本的文件在`./themes/PaperMod/assets/css/common/footer.css`，我们就将其复制到`./css/common/footer.css`这样。这里我直接给出我的个人仓库修改的东西。大家也可以来我的[github仓库](https://github.com/ForsakenDelusion/blog)进行查看
+前面提到过留了一个问题后面说，我们的`PaperMod`是以子模块的方式被安装的，这就会导致一个问题，当我们想个性化主题的时候，会发现一个非常难受的点，因为远程仓库关联的是官方的`PaperMod`，所以你修改完了同步不过去，当然解决办法也很多，比如新建一个复制于官方仓库的个人仓库维护，或者添加两个远程仓库之类的方法。但我这里所说的是较为模块化的方法，那就是将`themes/PaperMod/`下的对应文件复制到博客根目录下的相同文件夹内进行修改的方法。比如原本的文件在`themes/PaperMod/assets/css/common/footer.css`，我们就将其复制到`css/common/footer.css`这样。这里我直接给出我的个人仓库修改的东西。大家也可以来我的[github仓库](https://github.com/ForsakenDelusion/blog)进行查看
 
 ### 深浅色主题适配
 
-`./css/core/theme-vars.css`
+`css/core/theme-vars.css`
 
 ```css
 :root {
@@ -724,7 +904,7 @@ frontmatter:
 
 ### hover效果
 
-`./css/extended/hover.css`
+`css/extended/hover.css`
 
 ```css
 /* 以下是新增的hover效果 */
@@ -784,7 +964,7 @@ body.dark .social-icons a[href*='linkedin']:hover svg {
 
 ### 顶部导航栏常驻效果
 
-`./css/common/header.css`
+`css/common/header.css`
 
 ```css
 .nav {
@@ -882,7 +1062,7 @@ body:not(.dark) #sun {
 }
 ```
 
-`./css/extended/nav-fixed.css`
+`css/extended/nav-fixed.css`
 
 ```css
 .header {
@@ -918,7 +1098,7 @@ body.dark {
 }
 ```
 
-`./css/includes/chroma-styles.css`
+`css/includes/chroma-styles.css`
 
 ```css
 /* Generated using: hugo gen chromastyles --style=rose-pine-dawn */
