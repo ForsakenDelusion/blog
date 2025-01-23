@@ -1,8 +1,21 @@
 :root {
     --nav-width: 1380px;
-    --article-width: 650px;
+    --article-width: 350px;
     --toc-width: 300px;
+    --gap: 15px; /* 添加 gap 变量来控制两边的间距 */
 }
+
+.main {
+    max-width: 100%; /* 允许宽度填满父容器 */
+    margin-inline-start: auto;
+    margin-inline-end: auto;
+    margin-left: var(--article-width); /* 保持默认宽度 */
+    margin-right: var(--article-width); /* 保持默认宽度 */
+    line-height: var(--header-height * 0.5);
+    transition: margin 0.3s ease; /* 平滑过渡 */
+}
+
+
 .toc {
     margin: 0 2px 40px 2px;
     border: 1px solid var(--border);
@@ -10,6 +23,7 @@
     border-radius: var(--radius);
     padding: 0.4em;
 }
+
 .toc-container.wide {
     position: absolute;
     height: 100%;
@@ -18,6 +32,7 @@
     top: calc(var(--gap) * 2);
     width: var(--toc-width);
 }
+
 .wide .toc {
     position: sticky;
     top: var(--gap);
@@ -27,46 +42,74 @@
     width: 100%;
     margin: 0 2px 40px 2px;
 }
+
 .toc details summary {
     cursor: zoom-in;
     margin-inline-start: 20px;
     padding: 12px 0;
 }
+
 .toc details[open] summary {
     font-weight: 500;
 }
+
 .toc-container.wide .toc .inner {
     margin: 0;
 }
+
 .active {
     font-size: 110%;
     font-weight: 600;
 }
+
 .toc ul {
     list-style-type: circle;
 }
+
 .toc .inner {
     margin: 0 0 0 20px;
-    padding: 0px 15px 15px 20px;
+    padding: 0px 15px 15px 30px;
     font-size: 16px;
-    /*目录显示高度*/
     max-height: 83vh;
     overflow-y: auto;
 }
-.toc .inner::-webkit-scrollbar-thumb {  /*滚动条*/
+
+.toc .inner::-webkit-scrollbar-thumb {
     background: var(--border);
     border: 7px solid var(--theme);
     border-radius: var(--radius);
 }
+
 .toc li ul {
     margin-inline-start: calc(var(--gap) * 0.5);
     list-style-type: none;
 }
+
 .toc li {
     list-style: none;
     font-size: 0.95rem;
     padding-bottom: 5px;
 }
+
 .toc li a:hover {
     color: var(--secondary);
+}
+
+/* 媒体查询: 当视口宽度小于 900px 时，取消两边固定宽度 */
+@media (max-width: 900px) {
+    .main {
+        margin-left: 20px; /* 缩小两边间距 */
+        margin-right: 20px; /* 缩小两边间距 */
+    }
+
+    .toc-container.wide {
+        position: static; /* 改为静态位置 */
+        width: 100%; /* 自适应宽度 */
+        border-right: none; /* 取消边框 */
+        margin: 20px 0; /* 设置上/下间距 */
+    }
+
+    .toc {
+        padding: 1em; /* 调整padding */
+    }
 }
