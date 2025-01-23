@@ -98,18 +98,8 @@
 /* 媒体查询: 当视口宽度小于 900px 时，取消两边固定宽度 */
 @media (max-width: 900px) {
     .main {
-        margin-left: 20px; /* 缩小两边间距 */
-        margin-right: 20px; /* 缩小两边间距 */
+        margin-left: 10px; /* 缩小两边间距 */
+        margin-right: 10px; /* 缩小两边间距 */
     }
 
-    .toc-container.wide {
-        position: static; /* 改为静态位置 */
-        width: 100%; /* 自适应宽度 */
-        border-right: none; /* 取消边框 */
-        margin: 20px 0; /* 设置上/下间距 */
-    }
-
-    .toc {
-        padding: 1em; /* 调整padding */
-    }
 }
