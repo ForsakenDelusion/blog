@@ -509,7 +509,6 @@ frontmatter:
 
 ### 侧边目录
 
-参考[# Hugo-PaperMod主题自定义](https://blog.grew.cc/posts/papermod-modify/#%E6%96%B9%E6%B3%95%E4%B8%89)
 复制模板文件 `~/themes\PaperMod\layouts\partials\toc.html` 到站点根目录下，替换内容并添加样式：
 
 ```html
@@ -632,12 +631,16 @@ frontmatter:
              }
          })
      }, false);
-    const main = parseInt(getComputedStyle(document.body).getPropertyValue('--article-width'), 10);
-    const toc = parseInt(getComputedStyle(document.body).getPropertyValue('--toc-width'), 10);
-    const gap = parseInt(getComputedStyle(document.body).getPropertyValue('--gap'), 10);
-    function checkTocPosition() {
+     function checkTocPosition() {
         const width = document.body.scrollWidth;
-        if (width - main - (toc * 2) - (gap * 4) > 0) {
+        
+        // 动态获取文章和目录的宽度
+        const main = document.querySelector('.main').offsetWidth; // 获取文章的实际宽度
+        const toc = document.querySelector('.toc').offsetWidth;   // 获取目录的实际宽度
+        const gap = parseInt(getComputedStyle(document.body).getPropertyValue('--gap'), 15);
+    
+        // 判断是否有足够的空间来显示目录（TOC）
+        if (width - main - toc - gap * 2 > 0) {
             document.getElementById("toc-container").classList.add("wide");
         } else {
             document.getElementById("toc-container").classList.remove("wide");
@@ -651,6 +654,8 @@ frontmatter:
         let win = element.ownerDocument.defaultView;
         return rect.top + win.pageYOffset;   
     }
+    
+    
 </script>
 {{- end }}
 ```
@@ -659,10 +664,22 @@ frontmatter:
 
 ```css
 :root {
-    --nav-width: 1380px;
-    --article-width: 650px;
+    --margin-width: 300px;
     --toc-width: 300px;
+    --gap: 20px; /* 添加 gap 变量来控制两边的间距 */
 }
+
+.main {
+    max-width: 100%; /* 允许宽度填满父容器 */
+    margin-inline-start: auto;
+    margin-inline-end: auto;
+    margin-left: var(--margin-width); /* 保持默认宽度 */
+    margin-right: var(--margin-width); /* 保持默认宽度 */
+    line-height: var(--header-height * 0.5);
+    transition: margin 0.3s ease; /* 平滑过渡 */
+}
+
+
 .toc {
     margin: 0 2px 40px 2px;
     border: 1px solid var(--border);
@@ -670,65 +687,83 @@ frontmatter:
     border-radius: var(--radius);
     padding: 0.4em;
 }
+
 .toc-container.wide {
     position: absolute;
     height: 100%;
-    border-right: 1px solid var(--border);
-    left: calc((var(--toc-width) + var(--gap)) * -1);
+    left: calc((var(--margin-width) - var(--gap) * 2) * -1);
     top: calc(var(--gap) * 2);
     width: var(--toc-width);
 }
+
 .wide .toc {
     position: sticky;
-    top: var(--gap);
-    border: unset;
-    background: unset;
-    border-radius: unset;
-    width: 100%;
-    margin: 0 2px 40px 2px;
+    top:45px ;
+    border-radius: 15px;
+    width: 80%;
+    height: auto;
+    margin: 45px 2px 40px 2px;
 }
+
 .toc details summary {
     cursor: zoom-in;
     margin-inline-start: 20px;
     padding: 12px 0;
 }
+
 .toc details[open] summary {
     font-weight: 500;
 }
+
 .toc-container.wide .toc .inner {
     margin: 0;
 }
+
 .active {
     font-size: 110%;
     font-weight: 600;
 }
+
 .toc ul {
     list-style-type: circle;
 }
+
 .toc .inner {
     margin: 0 0 0 20px;
-    padding: 0px 15px 15px 20px;
+    padding: 0px 15px 15px 30px;
     font-size: 16px;
-    /*目录显示高度*/
     max-height: 83vh;
     overflow-y: auto;
 }
-.toc .inner::-webkit-scrollbar-thumb {  /*滚动条*/
+
+.toc .inner::-webkit-scrollbar-thumb {
     background: var(--border);
     border: 7px solid var(--theme);
     border-radius: var(--radius);
 }
+
 .toc li ul {
     margin-inline-start: calc(var(--gap) * 0.5);
     list-style-type: none;
 }
+
 .toc li {
     list-style: none;
     font-size: 0.95rem;
     padding-bottom: 5px;
 }
+
 .toc li a:hover {
     color: var(--secondary);
+}
+
+/* 媒体查询: 当视口宽度小于 900px 时，取消两边固定宽度 */
+@media (max-width: 900px) {
+    .main {
+        margin-left: 10px; /* 缩小两边间距 */
+        margin-right: 10px; /* 缩小两边间距 */
+    }
+
 }
 ```
 
@@ -1291,9 +1326,13 @@ body.dark {
 
 这里就不详细赘述了，按照 Hugo 的[文档](https://gohugo.io/hosting-and-deployment/hosting-on-github/)指导来操作即可。
 
-## 部署到vercel
+## 部署到Vercel
 
-首先关闭掉`github pages`，然后注册`vercel`账户，直接导入你的`blog`仓库，然后再部署页面的框架选择`hugo`，这里注意一下，需要设置环境变量`HUGO_VERSION`为你构建时的`hugo`版本，我的为`0.141.0`。然后再按照`vercel`给你的提示设置域名解析。
+因为`GitHub Pages`在国内访问速度过于慢的原因，我将静态托管迁移到`Vercel`。因为`Vercel`自身域名被墙的原因，建议有自己域名的同学们更换。
+
+首先关闭掉`GitHub Pages`，然后注册`vercel`账户，直接导入你的`blog`仓库，然后再部署页面的框架选择`hugo`，这里注意一下，需要设置环境变量`HUGO_VERSION`为你构建时的`hugo`版本，我的为`0.141.0`。然后再按照`vercel`给你的提示设置域名解析。
+
+使用`Vercel`构建，不仅访问速度快，发布构建的速度也远超`GitHub Pages`
 
 ## 结尾
 
