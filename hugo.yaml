@@ -117,11 +117,11 @@ params:
       includeMatches: true
   # 设置网站的标签页的图标，即 favicon
   assets:
-      favicon: "/assets/favicon/favicon.ico"
-      favicon16x16: "/assets/favicon/favicon.ico"
-      favicon32x32: "/assets/favicon/favicon.ico"
-      apple_touch_icon: "/assets/favicon/favicon.ico"
-      safari_pinned_tab: "/assets/favicon/favicon.ico"
+      favicon: "/assets/favicon.ico"
+      favicon16x16: "/assets/favicon.ico"
+      favicon32x32: "/assets/favicon.ico"
+      apple_touch_icon: "/assets/favicon.ico"
+      safari_pinned_tab: "/assets/favicon.ico"
       disableFingerprinting: false    # 可选，但有时候有帮助    
 
 
