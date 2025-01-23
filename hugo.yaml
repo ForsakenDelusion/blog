@@ -122,7 +122,7 @@ params:
       favicon32x32: "/assets/favicon.ico"
       apple_touch_icon: "/assets/favicon.ico"
       safari_pinned_tab: "/assets/favicon.ico"
-      # disableFingerprinting: true    # 可选，但有时候有帮助    
+      disableFingerprinting: false    # 可选，但有时候有帮助    
 
 
   # 评论的设置
