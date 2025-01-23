@@ -92,11 +92,21 @@
     color: var(--secondary);
 }
 
-/* 媒体查询: 当视口宽度小于 900px 时，取消两边固定宽度 */
-@media (max-width: 900px) {
+/* 修改媒体查询条件 */
+@media (max-width: 900px), (max-height: 400px) {
     .main {
-        margin-left: 10px; /* 缩小两边间距 */
-        margin-right: 10px; /* 缩小两边间距 */
+        margin-left: 10px;
+        margin-right: 10px;
+        transition: margin 0.1s ease; /* 缩短过渡时间 */
     }
+}
 
+/* 以下代码是为了做旋转适配 */
+
+.toc-container {
+    display: none; /* 默认隐藏 */
+}
+
+.toc-container.wide {
+    display: block; 
 }

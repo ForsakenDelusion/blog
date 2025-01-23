@@ -124,7 +124,7 @@
         const main = document.querySelector('.main').offsetWidth; // 获取文章的实际宽度
         const toc = document.querySelector('.toc').offsetWidth;   // 获取目录的实际宽度
         const gap = parseInt(getComputedStyle(document.body).getPropertyValue('--gap'), 15);
-        
+    
         // 判断是否有足够的空间来显示目录（TOC）
         if (width - main - toc - gap * 2 > 0) {
             document.getElementById("toc-container").classList.add("wide");
@@ -132,7 +132,6 @@
             document.getElementById("toc-container").classList.remove("wide");
         }
     }
-    
     function getOffsetTop(element) {
         if (!element.getClientRects().length) {
             return 0;
@@ -141,22 +140,25 @@
         let win = element.ownerDocument.defaultView;
         return rect.top + win.pageYOffset;   
     }
-    
-    // 在页面加载后，立即检查布局
-    window.addEventListener('DOMContentLoaded', () => {
-        checkTocPosition(); // 初始化检查
+            // 防抖时间延长至250ms适应旋转延迟
+    function debounce(fn, delay=250) {
+        let timer;
+        return (...args) => {
+            clearTimeout(timer);
+            timer = setTimeout(() => fn.apply(this, args), delay);
+        };
+    }
+
+    // 单独处理旋转事件
+    const onOrientationChange = debounce(() => {
+        console.log('屏幕方向变化');
+        // 强制触发重排
+        document.body.clientWidth;
+        checkTocPosition();
     });
-    
-    // 窗口大小改变时重新检查布局
-    window.addEventListener('resize', () => {
-        checkTocPosition(); // 每次调整窗口大小时都检查一次
-    });
-    
-    // 监听设备方向变化（旋转）
-    window.addEventListener('orientationchange', () => {
-        checkTocPosition(); // 每次设备方向改变时重新检查布局
-    });
-    
+
+    window.addEventListener('resize', debounce(checkTocPosition));
+    window.addEventListener('orientationchange', onOrientationChange);
     
 </script>
 {{- end }}
