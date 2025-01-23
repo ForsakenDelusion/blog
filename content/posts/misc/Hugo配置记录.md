@@ -1090,7 +1090,8 @@ body.dark {
         left: 0;
         right: 0;
         z-index: 99;
-        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);  /* 添加轻微阴影效果 */
+				box-shadow: 0 2px 2px rgba(255, 255, 255, 0.1);  /* 添加轻微阴影效果 */
+
         background-color: rgba(29, 30, 32, 0.3); /* 半透明背景 */
         backdrop-filter: blur(5px); /* 毛玻璃效果 */
         -webkit-backdrop-filter: blur(5px); /* 兼容 Safari */
