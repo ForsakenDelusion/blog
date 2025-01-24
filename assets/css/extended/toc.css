@@ -45,18 +45,9 @@
     margin: 45px var(--gap) 40px var(--gap);
 }
 
-.toc details summary {
-    cursor: zoom-in;
-    margin-inline-start: 20px;
-    padding: 12px 0;
-}
-
-.toc details[open] summary {
-    font-weight: 500;
-}
-
-.toc details summary::marker {
-    content: "";
+.toc .details{
+    margin-left: 10px;
+    font-weight: 700;
 }
 
 .toc-container.wide .toc .inner {
@@ -65,7 +56,7 @@
 
 .active {
     font-size: 110%;
-    font-weight: 600;
+    font-weight: 500;
 }
 
 .toc ul {
