@@ -63,6 +63,10 @@
     }
 
     /* 移动端目录内部样式调整 */
+    .toc-container.mobile-show .toc details summary::marker {
+        content: "";
+    }
+
     .toc-container.mobile-show .toc {
         margin: unset;
         height: auto;
