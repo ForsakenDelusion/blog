@@ -1,3 +1,8 @@
+.nav {
+    max-width: unset; 
+    line-height: var(--header-height * 0.5); /* 适配移动端的高度 */
+}
+
 .header {
     position: fixed;
     top: 0;
