@@ -43,6 +43,9 @@
 
 <header class="header">
     <nav class="nav">
+        <button class="mobile-menu-btn" aria-label="展开目录">
+            <span class="menu-icon">☰</span>
+        </button>
         <div class="logo">
             {{- $label_text := (site.Params.label.text | default site.Title) }}
             {{- if site.Title }}
@@ -121,6 +124,7 @@
                 {{- end }}
             </div>
         </div>
+         
         {{- $currentPage := . }}
         <ul id="menu">
             {{- range site.Menus.main }}
@@ -147,5 +151,37 @@
             </li>
             {{- end }}
         </ul>
+       
     </nav>
 </header>
+
+<!-- 添加遮罩层 -->
+<div class="mobile-menu-mask"></div>
+
+<script>
+    // 添加到文件末尾
+    document.addEventListener('DOMContentLoaded', function() {
+        const menuBtn = document.querySelector('.mobile-menu-btn');
+        const mask = document.querySelector('.mobile-menu-mask');
+        const tocContainer = document.getElementById('toc-container');
+
+        if (menuBtn && tocContainer) {
+            menuBtn.addEventListener('click', function() {
+                tocContainer.classList.add('mobile-show');
+                setTimeout(() => {
+                    tocContainer.classList.add('active');
+                    mask.classList.add('show');
+                }, 10);
+            });
+
+            mask.addEventListener('click', function() {
+                tocContainer.classList.remove('active');
+                mask.classList.remove('show');
+                setTimeout(() => {
+                    tocContainer.classList.remove('mobile-show');
+                }, 300);
+            });
+        }
+    });
+</script>
+
