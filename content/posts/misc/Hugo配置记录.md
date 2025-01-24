@@ -6,7 +6,7 @@ categories:
 tags:
   - blog
 author: Delusion
-description: hugo建站,配置,papermod,hugo,blog
+description: hugo建站,配置,侧边目录,papermod,hugo,blog,side toc,
 slug: hugo-configuration
 dir: misc
 share: true
