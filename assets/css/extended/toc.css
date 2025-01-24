@@ -38,7 +38,7 @@
 
 .wide .toc {
     position: sticky;
-    top:60px ;
+    top: 70px ; /* 侧边目录顶部和顶部导航栏的空隙 */
     border-radius: 15px;
     width: auto;
     height: auto;

@@ -64,8 +64,8 @@
 
     /* 移动端目录内部样式调整 */
     .toc-container.mobile-show .toc {
-        margin: 0 0 0 0;
-        height: 100%;
+        margin: unset;
+        height: auto;
         border: none;
     }
 
