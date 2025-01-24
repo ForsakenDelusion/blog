@@ -11,6 +11,10 @@ slug: hugo-configuration
 dir: misc
 share: true
 ---
+## 注意
+
+如果你不想配置，请直接使用我提供的[魔改主题](https://github.com/ForsakenDelusion/toc-PaperMod)。求个star喵
+
 ## 环境
 
 MacBook M1Pro，macOS 15.1.1
@@ -515,9 +519,8 @@ frontmatter:
 {{- $headers := findRE "<h[1-6].*?>(.|\n])+?</h[1-6]>" .Content -}}
 {{- $has_headers := ge (len $headers) 1 -}}
 {{- if $has_headers -}}
-<aside id="toc-container" class="toc-container wide">
+<aside id="toc-container" class="toc-container">
     <div class="toc">
-        <details {{if (.Param "TocOpen") }} open{{ end }}>
             <summary accesskey="c" title="(Alt + C)">
                 <span class="details">{{- i18n "toc" | default "Table of Contents" }}</span>
             </summary>
@@ -597,7 +600,6 @@ frontmatter:
                 {{- end }}
                 </ul>
             </div>
-        </details>
     </div>
 </aside>
 <script>
@@ -644,6 +646,7 @@ frontmatter:
             document.getElementById("toc-container").classList.add("wide");
         } else {
             document.getElementById("toc-container").classList.remove("wide");
+            document.getElementById("toc-container").classList.remove("logo");
         }
     }
     function getOffsetTop(element) {
@@ -654,7 +657,25 @@ frontmatter:
         let win = element.ownerDocument.defaultView;
         return rect.top + win.pageYOffset;   
     }
-    
+            // 防抖时间延长至250ms适应旋转延迟
+    function debounce(fn, delay=250) {
+        let timer;
+        return (...args) => {
+            clearTimeout(timer);
+            timer = setTimeout(() => fn.apply(this, args), delay);
+        };
+    }
+
+    // 单独处理旋转事件
+    const onOrientationChange = debounce(() => {
+        console.log('屏幕方向变化');
+        // 强制触发重排
+        document.body.clientWidth;
+        checkTocPosition();
+    });
+
+    window.addEventListener('resize', debounce(checkTocPosition));
+    window.addEventListener('orientationchange', onOrientationChange);
     
 </script>
 {{- end }}
@@ -667,6 +688,7 @@ frontmatter:
     --margin-width: 300px;
     --toc-width: 300px;
     --gap: 20px; /* 添加 gap 变量来控制两边的间距 */
+    --toc-height: 70vh;
 }
 
 .main {
@@ -677,8 +699,9 @@ frontmatter:
     margin-right: var(--margin-width); /* 保持默认宽度 */
     line-height: var(--header-height * 0.5);
     transition: margin 0.3s ease; /* 平滑过渡 */
+    padding-left: var(--gap);
+    padding-right: var(--gap);
 }
-
 
 .toc {
     margin: 0 2px 40px 2px;
@@ -691,28 +714,23 @@ frontmatter:
 .toc-container.wide {
     position: absolute;
     height: 100%;
-    left: calc((var(--margin-width) - var(--gap) * 2) * -1);
-    top: calc(var(--gap) * 2);
+    left: calc((var(--margin-width) - var(--gap) * 0) * -1);
+    top: calc(var(--gap) * 4);
     width: var(--toc-width);
 }
 
 .wide .toc {
     position: sticky;
-    top:45px ;
+    top: 70px ; /* 侧边目录顶部和顶部导航栏的空隙 */
     border-radius: 15px;
-    width: 80%;
+    width: auto;
     height: auto;
-    margin: 45px 2px 40px 2px;
+    margin: 45px var(--gap) 40px var(--gap);
 }
 
-.toc details summary {
-    cursor: zoom-in;
-    margin-inline-start: 20px;
-    padding: 12px 0;
-}
-
-.toc details[open] summary {
-    font-weight: 500;
+.toc .details{
+    margin-left: 10px;
+    font-weight: 700;
 }
 
 .toc-container.wide .toc .inner {
@@ -721,7 +739,7 @@ frontmatter:
 
 .active {
     font-size: 110%;
-    font-weight: 600;
+    font-weight: 500;
 }
 
 .toc ul {
@@ -732,7 +750,7 @@ frontmatter:
     margin: 0 0 0 20px;
     padding: 0px 15px 15px 30px;
     font-size: 16px;
-    max-height: 83vh;
+    max-height: var(--toc-height);
     overflow-y: auto;
 }
 
@@ -757,15 +775,315 @@ frontmatter:
     color: var(--secondary);
 }
 
-/* 媒体查询: 当视口宽度小于 900px 时，取消两边固定宽度 */
-@media (max-width: 900px) {
+/* 修改媒体查询条件 */
+@media (max-width: 900px), (max-height: 400px) {
     .main {
-        margin-left: 10px; /* 缩小两边间距 */
-        margin-right: 10px; /* 缩小两边间距 */
+        margin-left: 10px;
+        margin-right: 10px;
+        transition: margin 0.1s ease; /* 缩短过渡时间 */
     }
+}
 
+/* 以下代码是为了做旋转适配 */
+
+.toc-container {
+    display: none; /* 默认隐藏 */
+}
+
+.toc-container.wide {
+    display: block; 
 }
 ```
+
+### 顶部菜单移动端适配
+
+`assets/css/extended/header-flex.css`
+
+```css
+/* 移动端样式 */
+@media (max-width: 900px) {
+    .nav {
+        position: relative;
+    }
+
+    /* 显示移动端按钮 */
+    .mobile-menu-btn {
+        display: block;
+        position: absolute;
+        right: 1rem;
+        top: 50%;
+        transform: translateY(-50%);
+        font-size: 1.5rem;
+        background: none;
+        border: none;
+        color: inherit;
+        cursor: pointer;
+        z-index: 1001;
+    }
+
+    /* 移动端目录遮罩层 */
+    .mobile-menu-mask {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: 1000;
+    }
+
+    /* 移动端目录样式 */
+    .toc-container.mobile-show {
+        display: block;
+        position: fixed;
+        top: 0;
+        right: 0;
+        width: 80%;
+        max-width: 300px;
+        height: 100%;
+        background: var(--theme);
+        z-index: 1001;
+        padding: 20px;
+        box-shadow: -2px 0 8px rgba(0, 0, 0, 0.15);
+        overflow-y: auto;
+        transform: translateX(100%);
+        transition: transform 0.3s ease;
+    }
+
+    .toc-container.mobile-show.active {
+        transform: translateX(0);
+    }
+
+    .mobile-menu-mask.show {
+        display: block;
+    }
+
+    /* 移动端目录内部样式调整 */
+
+    .toc-container.mobile-show .toc {
+        margin: unset;
+        height: auto;
+        border: none;
+    }
+
+    .toc-container.mobile-show .toc .inner {
+        max-height: none;
+        height: 100%;
+    }
+
+    /* 移动端文章页面隐藏menu */
+    .nav-menu {
+        display: none !important;
+    }
+}
+
+/* 桌面端隐藏按钮 */
+@media (min-width: 900px) {
+    .mobile-menu-btn,
+    .mobile-menu-mask {
+        display: none !important;
+    }
+}
+```
+
+`layouts/partials/header.html`
+
+```html
+{{- /* theme-toggle is enabled */}}
+{{- if (not site.Params.disableThemeToggle) }}
+{{- /* theme is light */}}
+{{- if (eq site.Params.defaultTheme "light") }}
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    }
+
+</script>
+{{- /* theme is dark */}}
+{{- else if (eq site.Params.defaultTheme "dark") }}
+<script>
+    if (localStorage.getItem("pref-theme") === "light") {
+        document.body.classList.remove('dark')
+    }
+
+</script>
+{{- else }}
+{{- /* theme is auto */}}
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    } else if (localStorage.getItem("pref-theme") === "light") {
+        document.body.classList.remove('dark')
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.classList.add('dark');
+    }
+
+</script>
+{{- end }}
+{{- /* theme-toggle is disabled and theme is auto */}}
+{{- else if (and (ne site.Params.defaultTheme "light") (ne site.Params.defaultTheme "dark"))}}
+<script>
+    if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.classList.add('dark');
+    }
+
+</script>
+{{- end }}
+
+
+
+<header class="header">
+    <nav class="nav">
+        {{/* 只在文章页面显示汉堡菜单按钮 */}}
+        {{ if .IsPage }}
+            <button class="mobile-menu-btn" aria-label="展开目录">
+                <span class="menu-icon">☰</span>
+            </button>
+        {{ end }}
+        <div class="logo">
+            {{- $label_text := (site.Params.label.text | default site.Title) }}
+            {{- if site.Title }}
+            <a href="{{ "" | absLangURL }}" accesskey="h" title="{{ $label_text }} (Alt + H)">
+                {{- if site.Params.label.icon }}
+                {{- $img := resources.Get site.Params.label.icon }}
+                {{- if $img }}
+                    {{- $processableFormats := (slice "jpg" "jpeg" "png" "tif" "bmp" "gif") -}}
+                    {{- if hugo.IsExtended -}}
+                        {{- $processableFormats = $processableFormats | append "webp" -}}
+                    {{- end -}}
+                    {{- $prod := (hugo.IsProduction | or (eq site.Params.env "production")) }}
+                    {{- if and (in $processableFormats $img.MediaType.SubType) (eq $prod true)}}
+                        {{- if site.Params.label.iconHeight }}
+                            {{- $img = $img.Resize (printf "x%d" site.Params.label.iconHeight) }}
+                        {{ else }}
+                            {{- $img = $img.Resize "x30" }}
+                        {{- end }}
+                    {{- end }}
+                    <img src="{{ $img.Permalink }}" alt="" aria-label="logo"
+                        height="{{- site.Params.label.iconHeight | default "30" -}}">
+                {{- else }}
+                <img src="{{- site.Params.label.icon | absURL -}}" alt="" aria-label="logo"
+                    height="{{- site.Params.label.iconHeight | default "30" -}}">
+                {{- end -}}
+                {{- else if hasPrefix site.Params.label.iconSVG "<svg" }}
+                    {{ site.Params.label.iconSVG | safeHTML }}
+                {{- end -}}
+                {{- $label_text -}}
+            </a>
+            {{- end }}
+            <div class="logo-switches">
+                {{- if (not site.Params.disableThemeToggle) }}
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+                {{- end }}
+
+                {{- $lang := .Lang}}
+                {{- $separator := or $label_text (not site.Params.disableThemeToggle)}}
+                {{- with site.Home.Translations }}
+                <ul class="lang-switch">
+                    {{- if $separator }}<li>|</li>{{ end }}
+                    {{- range . -}}
+                    {{- if ne $lang .Lang }}
+                    <li>
+                        <a href="{{- .Permalink -}}" title="{{ .Language.Params.languageAltTitle | default (.Language.LanguageName | emojify) | default (.Lang | title) }}"
+                            aria-label="{{ .Language.LanguageName | default (.Lang | title) }}">
+                            {{- if (and site.Params.displayFullLangName (.Language.LanguageName)) }}
+                            {{- .Language.LanguageName | emojify -}}
+                            {{- else }}
+                            {{- .Lang | title -}}
+                            {{- end -}}
+                        </a>
+                    </li>
+                    {{- end -}}
+                    {{- end}}
+                </ul>
+                {{- end }}
+            </div>
+        </div>
+         
+        {{- $currentPage := . }}
+        <ul id="menu" class="{{ if .IsPage }}nav-menu{{ end }}">
+            {{- range site.Menus.main }}
+            {{- $menu_item_url := (cond (strings.HasSuffix .URL "/") .URL (printf "%s/" .URL) ) | absLangURL }}
+            {{- $page_url:= $currentPage.Permalink | absLangURL }}
+            {{- $is_search := eq (site.GetPage .KeyName).Layout `search` }}
+            <li>
+                <a href="{{ .URL | absLangURL }}" title="{{ .Title | default .Name }} {{- cond $is_search (" (Alt + /)" | safeHTMLAttr) ("" | safeHTMLAttr ) }}"
+                {{- cond $is_search (" accesskey=/" | safeHTMLAttr) ("" | safeHTMLAttr ) }}>
+                    <span {{- if eq $menu_item_url $page_url }} class="active" {{- end }}>
+                        {{- .Pre }}
+                        {{- .Name -}}
+                        {{ .Post -}}
+                    </span>
+                    {{- if (findRE "://" .URL) }}&nbsp;
+                    <svg fill="none" shape-rendering="geometricPrecision" stroke="currentColor" stroke-linecap="round"
+                        stroke-linejoin="round" stroke-width="2.5" viewBox="0 0 24 24" height="12" width="12">
+                        <path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"></path>
+                        <path d="M15 3h6v6"></path>
+                        <path d="M10 14L21 3"></path>
+                    </svg>
+                    {{- end }}
+                </a>
+            </li>
+            {{- end }}
+        </ul>
+       
+    </nav>
+</header>
+
+<!-- 添加遮罩层 -->
+<div class="mobile-menu-mask"></div>
+
+<script>
+    // 添加到文件末尾
+    document.addEventListener('DOMContentLoaded', function() {
+        const menuBtn = document.querySelector('.mobile-menu-btn');
+        const mask = document.querySelector('.mobile-menu-mask');
+        const tocContainer = document.getElementById('toc-container');
+
+        if (menuBtn && tocContainer) {
+            menuBtn.addEventListener('click', function() {
+                tocContainer.classList.add('mobile-show');
+                setTimeout(() => {
+                    tocContainer.classList.add('active');
+                    mask.classList.add('show');
+                }, 10);
+            });
+
+            mask.addEventListener('click', function() {
+                tocContainer.classList.remove('active');
+                mask.classList.remove('show');
+                setTimeout(() => {
+                    tocContainer.classList.remove('mobile-show');
+                }, 300);
+            });
+        }
+    });
+</script>
+
+
+```
+
+
 
 ## 额外功能
 
@@ -913,7 +1231,7 @@ frontmatter:
 
 .dark {
     --theme: rgb(29, 30, 32);
-    --entry: rgb(46, 46, 51);
+    --entry: rgb(29, 30, 32);
     --primary: rgb(218, 218, 219);
     --secondary: rgb(155, 156, 157);
     --tertiary: rgb(65, 66, 68);
@@ -999,107 +1317,14 @@ body.dark .social-icons a[href*='linkedin']:hover svg {
 
 ### 顶部导航栏常驻效果
 
-`css/common/header.css`
-
-```css
-.nav {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    /* max-width: calc(var(--nav-width) + var(--gap) * 2); 注释此行以适配顶部导航栏*/
-    margin-inline-start: auto;
-    margin-inline-end: auto;
-    line-height: var(--header-height * 0.5); /* 适配移动端的高度 */
-}
-
-.nav a {
-    display: block;
-}
-
-.logo,
-#menu {
-    display: flex;
-    margin: auto var(--gap);
-}
-
-.logo {
-    flex-wrap: inherit;
-}
-
-.logo a {
-    font-size: 24px;
-    font-weight: 700;
-}
-
-.logo a img, .logo a svg {
-    display: inline;
-    vertical-align: middle;
-    pointer-events: none;
-    transform: translate(0, -10%);
-    border-radius: 6px;
-    margin-inline-end: 8px;
-}
-
-button#theme-toggle {
-    font-size: 26px;
-    margin: auto 4px;
-}
-
-body.dark #moon {
-    vertical-align: middle;
-    display: none;
-}
-
-body:not(.dark) #sun {
-    display: none;
-}
-
-#menu {
-    list-style: none;
-    word-break: keep-all;
-    overflow-x: auto;
-    white-space: nowrap;
-}
-
-#menu li + li {
-    margin-inline-start: var(--gap);
-}
-
-#menu a {
-    font-size: 16px;
-}
-
-#menu .active {
-    font-weight: 500;
-    border-bottom: 2px solid currentColor;
-}
-
-.lang-switch li,
-.lang-switch ul,
-.logo-switches {
-    display: inline-flex;
-    margin: auto 4px;
-}
-
-.lang-switch {
-    display: flex;
-    flex-wrap: inherit;
-}
-
-.lang-switch a {
-    margin: auto 3px;
-    font-size: 16px;
-    font-weight: 500;
-}
-
-.logo-switches {
-    flex-wrap: inherit;
-}
-```
-
 `css/extended/nav-fixed.css`
 
 ```css
+.nav {
+    max-width: unset; 
+    line-height: var(--header-height * 0.5); /* 适配移动端的高度 */
+}
+
 .header {
     position: fixed;
     top: 0;
@@ -1115,7 +1340,7 @@ body:not(.dark) #sun {
 
 /* 为了防止内容被固定导航栏遮挡，需要为 main 元素添加上边距 */
 .main {
-    padding-top: 60px;  /* 根据你的导航栏实际高度调整这个值 */
+    padding-top: 100px;  /* 根据你的导航栏实际高度调整这个值 */
 }
 
 body.dark {
@@ -1125,8 +1350,7 @@ body.dark {
         left: 0;
         right: 0;
         z-index: 99;
-				box-shadow: 0 2px 2px rgba(255, 255, 255, 0.1);  /* 添加轻微阴影效果 */
-
+        box-shadow: 0 2px 2px rgba(255, 255, 255, 0.1);  /* 添加轻微阴影效果 */
         background-color: rgba(29, 30, 32, 0.3); /* 半透明背景 */
         backdrop-filter: blur(5px); /* 毛玻璃效果 */
         -webkit-backdrop-filter: blur(5px); /* 兼容 Safari */
@@ -1319,6 +1543,27 @@ body.dark {
 /* GenericUnderline */ .chroma .gl { text-decoration:underline }
 /* TextWhitespace */ .chroma .w {  }
 }
+
+```
+
+### 优化下一篇文章阴影
+
+`assets/css/extended/disable-paginav-underline.css`
+
+```css
+.paginav .prev,
+.paginav .next {
+    box-shadow: 0 1px 2px 1px rgba(0, 0, 0, 0.1);
+    width: 50%;
+}
+```
+
+### 更改链接颜色
+
+`layouts/_default/_markup/render-link.html`
+
+```html
+<a href="{{ .Destination | safeURL }}"{{ with .Title}} title="{{ . }}"{{ end }}{{ if strings.HasPrefix .Destination "http" }} target="_blank" rel="noopener" style="color:#42b983";{{ end }}>{{ .Text | safeHTML }}</a>
 
 ```
 
