@@ -161,7 +161,6 @@ mv hugo.toml hugo.yaml
 我的配置文件。
 
 ```yaml
-// hugosite/hugo.yaml
 # ~~~~~~~~~
 # hugo 本身的配置
 # ~~~~~~~~~
@@ -181,7 +180,7 @@ enableEmoji: true # 允许 emoji
 pygmentsUseClasses: true
 defaultContentLanguage: zh # 顶部首先展示的语言界面
 defaultContentLanguageInSubdir: false # 是否要在地址栏加上默认的语言代码
-enableGitInfo: true # 启用git信息，用于更新“最后编辑于”的信息，lastmod参数
+enableGitInfo: true
 
 
 languages:
@@ -216,7 +215,7 @@ languages:
 # ~~~~~~~~~
 # 主题的配置(基本上是)
 # ~~~~~~~~~
-pagination.pagerSize: 8 # 每页展示的文章数量，属于hugo设置
+pagination.pagerSize: 8 # 每页展示的文章数量，这个没找到文档，应该是主题自己设置的
 
 params:
   env: production # to enable google analytics, opengraph, twitter-cards and schema.
@@ -268,7 +267,7 @@ params:
     #   title: Contact Me
     #   url: "https://t.me/sonnycalcr"
 
-  # 搜索 这里直接按照官方给出的样例配置
+  # 搜索
   fuseOpts:
       isCaseSensitive: false # 是否大小写敏感
       shouldSort: true # 是否排序
@@ -281,20 +280,20 @@ params:
       includeMatches: true
   # 设置网站的标签页的图标，即 favicon
   assets:
-      favicon: "/assets/favicon/favicon.ico"
-      favicon16x16: "/assets/favicon/favicon.ico"
-      favicon32x32: "/assets/favicon/favicon.ico"
-      apple_touch_icon: "/assets/favicon/favicon.ico"
-      safari_pinned_tab: "/assets/favicon/favicon.ico"
-      disableFingerprinting: true    # 可选，但有时候有帮助    
+      favicon: "img/favicon.ico"
+      favicon16x16: "img/favicon-16x16.png"
+      favicon32x32: "img/favicon-32x32.png"
+      apple_touch_icon: "img/apple-touch-icon.png"
+      safari_pinned_tab: "img/favicon.ico"
+      disableFingerprinting: false    # 可选，但有时候有帮助    
 
 
-  # 评论的设置，需要根据个人设置修改
+  # 评论的设置
   giscus:
-    repo: "" # 
-    repoId: ""
-    category: ""
-    categoryId: ""
+    repo: "ForsakenDelusion/blog"
+    repoId: "R_kgDONshkTg"
+    category: "Announcements"
+    categoryId: "DIC_kwDONshkTs4CmKQV"
     mapping: "pathname"
     strict: "0"
     reactionsEnabled: "1"
@@ -935,8 +934,8 @@ frontmatter:
 
 <header class="header">
     <nav class="nav">
-        {{/* 只在文章页面显示汉堡菜单按钮 */}}
-        {{ if .IsPage }}
+        {{/* 只在文章页面显示汉堡菜单按钮，使用 .Kind 来精确判断是否为文章页面 */}}
+        {{ if and (eq .Kind "page") (ne .Layout "search") (ne .Layout "archives") (ne .Type "page") }}
             <button class="mobile-menu-btn" aria-label="展开目录">
                 <span class="menu-icon">☰</span>
             </button>
@@ -1021,7 +1020,7 @@ frontmatter:
         </div>
          
         {{- $currentPage := . }}
-        <ul id="menu" class="{{ if .IsPage }}nav-menu{{ end }}">
+        <ul id="menu" class="{{ if and (eq .Kind "page") (ne .Layout "search") (ne .Layout "archives") (ne .Type "page") }}nav-menu{{ end }}">
             {{- range site.Menus.main }}
             {{- $menu_item_url := (cond (strings.HasSuffix .URL "/") .URL (printf "%s/" .URL) ) | absLangURL }}
             {{- $page_url:= $currentPage.Permalink | absLangURL }}
