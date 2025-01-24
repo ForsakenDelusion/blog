@@ -13,12 +13,8 @@
     margin-right: var(--margin-width); /* 保持默认宽度 */
     line-height: var(--header-height * 0.5);
     transition: margin 0.3s ease; /* 平滑过渡 */
+    padding: 0 var(--gap);
 }
-
-.main .post-single{
-    margin: 0 var(--gap) 0 var(--gap);
-}
-
 
 .toc {
     margin: 0 2px 40px 2px;
