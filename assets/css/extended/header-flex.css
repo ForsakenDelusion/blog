@@ -4,11 +4,6 @@
         position: relative;
     }
 
-    /* 隐藏桌面端元素 */
-    #menu {
-        display: none;
-    }
-
     /* 显示移动端按钮 */
     .mobile-menu-btn {
         display: block;
@@ -73,6 +68,11 @@
     .toc-container.mobile-show .toc .inner {
         max-height: none;
         height: 100%;
+    }
+
+    /* 移动端文章页面隐藏menu */
+    .nav-menu {
+        display: none;
     }
 }
 

@@ -43,9 +43,12 @@
 
 <header class="header">
     <nav class="nav">
-        <button class="mobile-menu-btn" aria-label="展开目录">
-            <span class="menu-icon">☰</span>
-        </button>
+        {{/* 只在文章页面显示汉堡菜单按钮 */}}
+        {{ if .IsPage }}
+            <button class="mobile-menu-btn" aria-label="展开目录">
+                <span class="menu-icon">☰</span>
+            </button>
+        {{ end }}
         <div class="logo">
             {{- $label_text := (site.Params.label.text | default site.Title) }}
             {{- if site.Title }}
@@ -126,7 +129,7 @@
         </div>
          
         {{- $currentPage := . }}
-        <ul id="menu">
+        <ul id="menu" class="{{ if .IsPage }}nav-menu{{ end }}">
             {{- range site.Menus.main }}
             {{- $menu_item_url := (cond (strings.HasSuffix .URL "/") .URL (printf "%s/" .URL) ) | absLangURL }}
             {{- $page_url:= $currentPage.Permalink | absLangURL }}
