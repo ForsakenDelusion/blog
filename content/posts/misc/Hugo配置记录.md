@@ -13,7 +13,7 @@ share: true
 ---
 ## 注意
 
-如果你不想配置，请直接使用我提供的[魔改主题](https://github.com/ForsakenDelusion/toc-PaperMod)。求个star喵
+如果你不想配置，请直接使用我提供的[魔改主题](https://github.com/ForsakenDelusion/toc-PaperMod)。求个star喵!
 
 ## 环境
 
