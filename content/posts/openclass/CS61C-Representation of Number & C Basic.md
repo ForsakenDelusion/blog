@@ -10,7 +10,7 @@ author: Delusion
 description: CS61C数的表示和C语言基础
 slug: CS61C-Representation-of-Number-and-C-Basic
 dir: openclass
-link: false
+links: false
 share: true
 ---
 

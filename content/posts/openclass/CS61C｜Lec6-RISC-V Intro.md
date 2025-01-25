@@ -10,7 +10,7 @@ author: Delusion
 description: CS61C RISCV 介绍
 slug: CS61C-Lec6-RISC-V
 dir: openclass
-link: false
+links: false
 share: true
 ---
 # Intro to Assembly Language
