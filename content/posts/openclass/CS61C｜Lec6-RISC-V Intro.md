@@ -10,7 +10,7 @@ author: Delusion
 description: CS61C RISCV 介绍
 slug: CS61C-Lec6-RISC-V
 dir: openclass
-attachment.folder: content/posts/openclass/images
+link: false
 share: true
 ---
 # Intro to Assembly Language
@@ -19,7 +19,7 @@ share: true
 
 - 常见的ISA
 
-![CS61C｜Lec6-RISC-V Intro-20250122.png](./images/CS61C%EF%BD%9CLec6-RISC-V%20Intro-20250122.png)
+![CS61C｜Lec6-RISC-V Intro-20250122.png](../../../static/images/CS61C%EF%BD%9CLec6-RISC-V%20Intro-20250122.png)
 
 ## Complex/Recuded Instruction Set Computing
 
@@ -57,7 +57,7 @@ share: true
 
 ## Great Idea #3 : Principle of Locality/Memory Hierarchy
 
-![CS61C｜Lec6-RISC-V Intro-20250122-1.png](./images/CS61C%EF%BD%9CLec6-RISC-V%20Intro-20250122-1.png)
+![CS61C｜Lec6-RISC-V Intro-20250122-1.png](../../../static/images/CS61C%EF%BD%9CLec6-RISC-V%20Intro-20250122-1.png)
 
 ## How Many Registers
 
@@ -69,7 +69,7 @@ RISCV有32个寄存器，每一个寄存器都是32位宽(32 bits wide)，保存
 
 ## RISCV Registers
 
-![CS61C｜Lec6-RISC-V Intro-20250122-2.png](./images/CS61C%EF%BD%9CLec6-RISC-V%20Intro-20250122-2.png)
+![CS61C｜Lec6-RISC-V Intro-20250122-2.png](../../../static/images/CS61C%EF%BD%9CLec6-RISC-V%20Intro-20250122-2.png)
 
 s 开头的寄存器称为 safe registers，它们用来保存程序变量。  
 
@@ -81,7 +81,7 @@ t 开头的寄存器持有临时变量。
 
 ## Registers in a Computer
 
-![CS61C｜Lec6-RISC-V Intro-20250122-3.png](./images/CS61C%EF%BD%9CLec6-RISC-V%20Intro-20250122-3.png)
+![CS61C｜Lec6-RISC-V Intro-20250122-3.png](../../../static/images/CS61C%EF%BD%9CLec6-RISC-V%20Intro-20250122-3.png)
 
 # Basic Instructions
 
@@ -193,7 +193,7 @@ C的变量被映射成寄存器，那么更大一些的数据结构怎么办呢�
 
 - Load: register FROM memory
 
-![CS61C｜Lec6-RISC-V Intro-20250122-4.png](./images/CS61C%EF%BD%9CLec6-RISC-V%20Intro-20250122-4.png)
+![CS61C｜Lec6-RISC-V Intro-20250122-4.png](../../../static/images/CS61C%EF%BD%9CLec6-RISC-V%20Intro-20250122-4.png)
 
 ```
 memop reg, off(bAddr)
@@ -219,11 +219,11 @@ memop reg, off(bAddr)
 
 内存地址(memory addresses)是由byte而不是word来索引
 
-![CS61C｜Lec6-RISC-V Intro-20250122-5.png](./images/CS61C%EF%BD%9CLec6-RISC-V%20Intro-20250122-5.png)
+![CS61C｜Lec6-RISC-V Intro-20250122-5.png](../../../static/images/CS61C%EF%BD%9CLec6-RISC-V%20Intro-20250122-5.png)
 
 字地址(word addresses)以4byte来分割(32位系统下)
 
-![CS61C｜Lec6-RISC-V Intro-20250122-6.png](./images/CS61C%EF%BD%9CLec6-RISC-V%20Intro-20250122-6.png)
+![CS61C｜Lec6-RISC-V Intro-20250122-6.png](../../../static/images/CS61C%EF%BD%9CLec6-RISC-V%20Intro-20250122-6.png)
 
 地址必须是4的倍数，这称之为字对齐(word-aligned)
 
@@ -274,13 +274,13 @@ str: .asciiz "Hello, World!"  # 声明一个以null结尾的字符串
 
 `.text` 段是用来存放程序的可执行指令的。这是程序的主体部分，包含了所有的函数和程序逻辑。当程序运行时，CPU会从 `.text` 段读取指令并执行它们。
 
-![CS61C｜Lec6-RISC-V Intro-20250122-7.png](./images/CS61C%EF%BD%9CLec6-RISC-V%20Intro-20250122-7.png)
+![CS61C｜Lec6-RISC-V Intro-20250122-7.png](../../../static/images/CS61C%EF%BD%9CLec6-RISC-V%20Intro-20250122-7.png)
 
 ## Endianness
 
 大端法(big endian)和小端法(little endian)（源自格列佛游记，鸡蛋是打大头还是小头）
 
-![CS61C｜Lec6-RISC-V Intro-20250122-8.png](./images/CS61C%EF%BD%9CLec6-RISC-V%20Intro-20250122-8.png)
+![CS61C｜Lec6-RISC-V Intro-20250122-8.png](../../../static/images/CS61C%EF%BD%9CLec6-RISC-V%20Intro-20250122-8.png)
 
 RISC-V使用小端法
 
@@ -294,7 +294,7 @@ RISC-V使用小端法
 
 用最高有效位(most-significant bit)填充
 
-![CS61C｜Lec6-RISC-V Intro-20250122-9.png](./images/CS61C%EF%BD%9CLec6-RISC-V%20Intro-20250122-9.png)
+![CS61C｜Lec6-RISC-V Intro-20250122-9.png](../../../static/images/CS61C%EF%BD%9CLec6-RISC-V%20Intro-20250122-9.png)
 
 0b 11 = 0b 1111
 
@@ -320,7 +320,7 @@ RISC-V使用小端法
 
 ## Byte Instructions
 
-![CS61C｜Lec6-RISC-V Intro-20250122-10.png](./images/CS61C%EF%BD%9CLec6-RISC-V%20Intro-20250122-10.png)
+![CS61C｜Lec6-RISC-V Intro-20250122-10.png](../../../static/images/CS61C%EF%BD%9CLec6-RISC-V%20Intro-20250122-10.png)
 
 `lb`/`sb`只用寄存器最低位的一个字节
 
@@ -346,7 +346,7 @@ sb s2, 2(s0) # *(s0) = 0x00800180
 
 “半字指令”，操作半个字，在32位系统下是两个byte，16个bit
 
-![CS61C｜Lec6-RISC-V Intro-20250122-11.png](./images/CS61C%EF%BD%9CLec6-RISC-V%20Intro-20250122-11.png)
+![CS61C｜Lec6-RISC-V Intro-20250122-11.png](../../../static/images/CS61C%EF%BD%9CLec6-RISC-V%20Intro-20250122-11.png)
 
 - `sh` "save half",高位的16bits将会被忽略
 
@@ -356,7 +356,7 @@ sb s2, 2(s0) # *(s0) = 0x00800180
 
 无符号操作
 
-![CS61C｜Lec6-RISC-V Intro-20250122-12.png](./images/CS61C%EF%BD%9CLec6-RISC-V%20Intro-20250122-12.png)
+![CS61C｜Lec6-RISC-V Intro-20250122-12.png](../../../static/images/CS61C%EF%BD%9CLec6-RISC-V%20Intro-20250122-12.png)
 
 为什么没有s(h/b)u?为什么没有lwu呢？
 
@@ -366,11 +366,11 @@ sb s2, 2(s0) # *(s0) = 0x00800180
 
 ## Data Transfer GreenCard Explanation
 
-![CS61C｜Lec6-RISC-V Intro-20250122-13.png](./images/CS61C%EF%BD%9CLec6-RISC-V%20Intro-20250122-13.png)
+![CS61C｜Lec6-RISC-V Intro-20250122-13.png](../../../static/images/CS61C%EF%BD%9CLec6-RISC-V%20Intro-20250122-13.png)
 
-![CS61C｜Lec6-RISC-V Intro-20250122-14.png](./images/CS61C%EF%BD%9CLec6-RISC-V%20Intro-20250122-14.png)
+![CS61C｜Lec6-RISC-V Intro-20250122-14.png](../../../static/images/CS61C%EF%BD%9CLec6-RISC-V%20Intro-20250122-14.png)
 
-![CS61C｜Lec6-RISC-V Intro-20250122-15.png](./images/CS61C%EF%BD%9CLec6-RISC-V%20Intro-20250122-15.png)
+![CS61C｜Lec6-RISC-V Intro-20250122-15.png](../../../static/images/CS61C%EF%BD%9CLec6-RISC-V%20Intro-20250122-15.png)
 
 这个意思就是低8位是从内存中取出的地址，高24位是利用符号位扩展得到的。
 
@@ -402,7 +402,7 @@ bne reg1, reg2, lable
 j lable
 ```
 
-![CS61C｜Lec6-RISC-V Intro-20250122-16.png](./images/CS61C%EF%BD%9CLec6-RISC-V%20Intro-20250122-16.png)
+![CS61C｜Lec6-RISC-V Intro-20250122-16.png](../../../static/images/CS61C%EF%BD%9CLec6-RISC-V%20Intro-20250122-16.png)
 
 ## Branch on Conditions other than (Not) Equal
 
@@ -449,7 +449,7 @@ PC 会跟踪 CPU 当前执行的指令。
 
 ## Control Flow Greencard Explanation
 
-![CS61C｜Lec6-RISC-V Intro-20250122-17.png](./images/CS61C%EF%BD%9CLec6-RISC-V%20Intro-20250122-17.png)
+![CS61C｜Lec6-RISC-V Intro-20250122-17.png](../../../static/images/CS61C%EF%BD%9CLec6-RISC-V%20Intro-20250122-17.png)
 
 imm 的第 0 位是 1，来保证它是偶数，这样 PC 的值总是会半对齐。因为我们需要支持半字指令
 
@@ -475,25 +475,25 @@ imm 的第 0 位是 1，来保证它是偶数，这样 PC 的值总是会半对�
 
 - 算数位移：进行位移操作的时候采用符号位扩展（只在右移的时候有效，且会保留符号）
 
-![CS61C｜Lec6-RISC-V Intro-20250122-18.png](./images/CS61C%EF%BD%9CLec6-RISC-V%20Intro-20250122-18.png)
+![CS61C｜Lec6-RISC-V Intro-20250122-18.png](../../../static/images/CS61C%EF%BD%9CLec6-RISC-V%20Intro-20250122-18.png)
 
 - 一些例子
 
 空格以后的例子展现了如何利用第五位的数据。
 
-![CS61C｜Lec6-RISC-V Intro-20250122-19.png](./images/CS61C%EF%BD%9CLec6-RISC-V%20Intro-20250122-19.png)
+![CS61C｜Lec6-RISC-V Intro-20250122-19.png](../../../static/images/CS61C%EF%BD%9CLec6-RISC-V%20Intro-20250122-19.png)
 
 - 如果机器不支持lbu，但是支持lw
 
 通过先取整个字，在与bit掩码进行逻辑运算实现取单个字节的方法
 
-![CS61C｜Lec6-RISC-V Intro-20250122-20.png](./images/CS61C%EF%BD%9CLec6-RISC-V%20Intro-20250122-20.png)
+![CS61C｜Lec6-RISC-V Intro-20250122-20.png](../../../static/images/CS61C%EF%BD%9CLec6-RISC-V%20Intro-20250122-20.png)
 
 - 如果机器不支持sb，但是支持sw
 
 一样的原理
 
-![CS61C｜Lec6-RISC-V Intro-20250122-21.png](./images/CS61C%EF%BD%9CLec6-RISC-V%20Intro-20250122-21.png)
+![CS61C｜Lec6-RISC-V Intro-20250122-21.png](../../../static/images/CS61C%EF%BD%9CLec6-RISC-V%20Intro-20250122-21.png)
 
 假设 **s0: 0x12345678**。**s1: 0xAB**  
 **lw t0, 0(s0)** 从 s0 地址读取当前值 0x12345678 到寄存器 t0，t0 = ‘0x12345678’。  
@@ -527,7 +527,7 @@ rem dst, src1, src2
 
 ## Bitwise Instructions
 
-![CS61C｜Lec6-RISC-V Intro-20250122-22.png](./images/CS61C%EF%BD%9CLec6-RISC-V%20Intro-20250122-22.png)
+![CS61C｜Lec6-RISC-V Intro-20250122-22.png](../../../static/images/CS61C%EF%BD%9CLec6-RISC-V%20Intro-20250122-22.png)
 
 ## Compare Instructions
 
