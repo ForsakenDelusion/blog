@@ -23,7 +23,7 @@ share: true
 
 - Unsigned Numbers 🚀
 
-![CS61C-Representation of Number & C Basic-20250122.png](../../../../images/CS61C-Representation%20of%20Number%20&%20C%20Basic-20250122.png)
+![CS61C-Representation of Number & C Basic-20250122.png](../../.././images/CS61C-Representation%20of%20Number%20&%20C%20Basic-20250122.png)
 
 - Sign and Magnitude(to represent negative numbers) 🙅
     
@@ -33,7 +33,7 @@ share: true
         
     - But now,there are some problems.When the bits grow up, at first we will get positive but then we get nagitive.Werrid.
         
-![CS61C-Representation of Number & C Basic-20250122-1.png](../../../../images/CS61C-Representation%20of%20Number%20&%20C%20Basic-20250122-1.png)
+![CS61C-Representation of Number & C Basic-20250122-1.png](../../.././images/CS61C-Representation%20of%20Number%20&%20C%20Basic-20250122-1.png)
 
 - Shortcomings of _Sign and Magnitude_
     
@@ -54,7 +54,7 @@ share: true
         - e.g. $7_{10} = 0111_2$ (7 in decimal is 0111 in binary), $-7_{10} = 1000_2$ (in 4-bit two's complement representation)
 
             
-![CS61C-Representation of Number & C Basic-20250122-2.png](../../../../images/CS61C-Representation%20of%20Number%20&%20C%20Basic-20250122-2.png)
+![CS61C-Representation of Number & C Basic-20250122-2.png](../../.././images/CS61C-Representation%20of%20Number%20&%20C%20Basic-20250122-2.png)
 
 - Shortcomings of _One's Complement_
     
@@ -206,11 +206,11 @@ Notice, the following image is about `byte alignment`, but it can help you to un
 
 In order to improves CPU data access efficiency
 
-![CS61C-Representation of Number & C Basic-20250122.jpg](../../../../images/CS61C-Representation%20of%20Number%20&%20C%20Basic-20250122.jpg)
+![CS61C-Representation of Number & C Basic-20250122.jpg](../../.././images/CS61C-Representation%20of%20Number%20&%20C%20Basic-20250122.jpg)
 
 Save storage space
 
-![CS61C-Representation of Number & C Basic-20250122-3.png](../../../../images/CS61C-Representation%20of%20Number%20&%20C%20Basic-20250122-3.png)
+![CS61C-Representation of Number & C Basic-20250122-3.png](../../.././images/CS61C-Representation%20of%20Number%20&%20C%20Basic-20250122-3.png)
 
 #### Arrays
 
@@ -322,7 +322,7 @@ printf("*a:%u, a:%u, &a:%u", *a, a, &a);
     - code: loaded when program starts, does not change
         
     
-![CS61C-Representation of Number & C Basic-20250122-4.png](../../../../images/CS61C-Representation%20of%20Number%20&%20C%20Basic-20250122-4.png)
+![CS61C-Representation of Number & C Basic-20250122-4.png](../../.././images/CS61C-Representation%20of%20Number%20&%20C%20Basic-20250122-4.png)
     
 
 So when we need to assign a huge space, we have two way to got it, first is like "array way" e.g. I need a 10 trillion integers, if we don't have the enough space, the program whill crash, but we use the other way `malloc()` to assign, if we don't have the space, `malloc()` wil return `NULL`, So you can now have code that is resilient to memory failure if you used `malloc()` versus using arrays.
@@ -365,7 +365,7 @@ main() {
 }
 ```
 
-![CS61C-Representation of Number & C Basic-20250122-5.png](../../../../images/CS61C-Representation%20of%20Number%20&%20C%20Basic-20250122-5.png)
+![CS61C-Representation of Number & C Basic-20250122-5.png](../../.././images/CS61C-Representation%20of%20Number%20&%20C%20Basic-20250122-5.png)
 
 - Once we've freed something, we had no access to it anymore
     
@@ -433,14 +433,14 @@ e.g. $10^{10}$ or $10^{-11}$ (we can go up to about $10^9$ but not $10^{10}$)
 - IEEE [演示网站](https://www.h-schmidt.net/FloatConverter/IEEE754.html)
     
 
-![CS61C-Representation of Number & C Basic-20250122-6.png](../../../../images/CS61C-Representation%20of%20Number%20&%20C%20Basic-20250122-6.png)
+![CS61C-Representation of Number & C Basic-20250122-6.png](../../.././images/CS61C-Representation%20of%20Number%20&%20C%20Basic-20250122-6.png)
 
 Exponent use two's complement
 
 - There is always a leading 1 unless all 0.
     
 
-![CS61C-Representation of Number & C Basic-20250122-7.png](../../../../images/CS61C-Representation%20of%20Number%20&%20C%20Basic-20250122-7.png)
+![CS61C-Representation of Number & C Basic-20250122-7.png](../../.././images/CS61C-Representation%20of%20Number%20&%20C%20Basic-20250122-7.png)
 
 - overflow&underflow
     
@@ -462,7 +462,7 @@ Exponent use two's complement
         
     - Now we have all 0 bits pattern to represent -127.The bigger the exponent, the bigger the number.(like bias encoding we mention in lec2)
         
-![CS61C-Representation of Number & C Basic-20250122-8.png](../../../../images/CS61C-Representation%20of%20Number%20&%20C%20Basic-20250122-8.png)
+![CS61C-Representation of Number & C Basic-20250122-8.png](../../.././images/CS61C-Representation%20of%20Number%20&%20C%20Basic-20250122-8.png)
 
 - Special Numbers
     
@@ -471,7 +471,7 @@ Exponent use two's complement
 
 Here are some numbers we don't use so far.We will use it instead of threw those bits away.
 
-![CS61C-Representation of Number & C Basic-20250122-9.png](../../../../images/CS61C-Representation%20of%20Number%20&%20C%20Basic-20250122-9.png)
+![CS61C-Representation of Number & C Basic-20250122-9.png](../../.././images/CS61C-Representation%20of%20Number%20&%20C%20Basic-20250122-9.png)
 
 - Not a Number(NaN)
     
@@ -494,9 +494,9 @@ Here are some numbers we don't use so far.We will use it instead of threw those 
   - Every time the exponent increases, double the size of stride.
 
 
-![CS61C-Representation of Number & C Basic-20250122-1.jpg](../../../../images/CS61C-Representation%20of%20Number%20&%20C%20Basic-20250122-1.jpg)
+![CS61C-Representation of Number & C Basic-20250122-1.jpg](../../.././images/CS61C-Representation%20of%20Number%20&%20C%20Basic-20250122-1.jpg)
 
-![CS61C-Representation of Number & C Basic-20250122-10.png](../../../../images/CS61C-Representation%20of%20Number%20&%20C%20Basic-20250122-10.png)
+![CS61C-Representation of Number & C Basic-20250122-10.png](../../.././images/CS61C-Representation%20of%20Number%20&%20C%20Basic-20250122-10.png)
 
 # Tips
 
