@@ -23,7 +23,7 @@ share: true
 
 - Unsigned Numbers 🚀
 
-![CS61C-Representation of Number & C Basic-20250122.png](../../../static/images/CS61C-Representation%20of%20Number%20&%20C%20Basic-20250122.png)
+![CS61C-Representation of Number & C Basic-20250122.png](../../../images/CS61C-Representation%20of%20Number%20&%20C%20Basic-20250122.png)
 
 - Sign and Magnitude(to represent negative numbers) 🙅
     
